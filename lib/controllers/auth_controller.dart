@@ -19,6 +19,7 @@ class AuthController extends StateNotifier<bool> {
 
       final accessToken = response.data['token'];
       ref.read(hiveStoreService).saveUserAuthToken(authToken: accessToken);
+      ref.read(hiveStoreService).saveNumber(phoneNumber: contact);
       ref.read(apiClientProvider).updateToken(token: accessToken);
       state = false;
       return true;

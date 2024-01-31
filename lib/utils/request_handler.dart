@@ -27,7 +27,10 @@ void addApiInterceptors(Dio dio) {
         handler.next(options);
       },
       onResponse: (response, handler) {
-        final message = response.data['message'];
+        String? message = '';
+        if (response.statusCode != 200) {
+          message = response.statusMessage;
+        }
         switch (response.statusCode) {
           case 401:
             Box authBox = Hive.box(AppConstants.authBox);
@@ -35,7 +38,7 @@ void addApiInterceptors(Dio dio) {
             GlobalFunction.navigatorKey.currentState
                 ?.pushNamedAndRemoveUntil(Routes.login, (route) => false);
             GlobalFunction.showCustomSnackbar(
-              message: message,
+              message: message ?? '',
               isSuccess: false,
             );
             break;
@@ -47,7 +50,7 @@ void addApiInterceptors(Dio dio) {
           case 422:
           case 500:
             GlobalFunction.showCustomSnackbar(
-              message: message,
+              message: message ?? '',
               isSuccess: false,
             );
             break;

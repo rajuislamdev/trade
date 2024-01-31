@@ -16,10 +16,11 @@ class TradeService implements TradeProvider {
   @override
   Future<Response> getTrades() async {
     final String? token = await ref.read(hiveStoreService).getAuthToken();
+    final String? number = await ref.read(hiveStoreService).getUserNumber();
     final response = await ref.read(apiClientProvider).post(
       AppConstants.getTrades,
       data: {
-        "login": "2088888",
+        "login": number,
         "token": token,
       },
     );

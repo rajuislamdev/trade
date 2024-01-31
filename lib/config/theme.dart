@@ -31,8 +31,8 @@ ThemeData getAppTheme(
     appBarTheme: AppBarTheme(
       backgroundColor: isDarkTheme ? AppColor.blackColor : AppColor.whiteColor,
       titleTextStyle: TextStyle(
-        color: isDarkTheme ? AppColor.whiteColor : AppColor.blackColor,
-        fontSize: 18.sp,
+        color: isDarkTheme ? AppColor.whiteColor : AppColor.whiteColor,
+        fontSize: 22.sp,
         fontWeight: FontWeight.w700,
       ),
       centerTitle: false,

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:trade/services/profile_service_provider.dart';
+import 'package:trade/models/trade.dart';
+import 'package:trade/services/trade_service_provider.dart';
 
-class AccountInfoController extends StateNotifier<AsyncValue> {
+class TradeController extends StateNotifier<AsyncValue<List<Trade>>> {
   final Ref ref;
-  AccountInfoController(this.ref) : super(const AsyncLoading());
+  TradeController(this.ref) : super(const AsyncLoading());
 
-  Future<void> getAccountInfo() async {
+  Future<void> getTrades() async {
     try {
-      final response = await ref.read(profileServiceProvider).getTrades();
-      // final data = OrderDetails.fromMap(response.data['data']['order']);
-      state = const AsyncData('data');
+      final response = await ref.read(tradeServiceProvider).getTrades();
+      final List<dynamic> tradesData = response.data;
+      final List<Trade> trades =
+          tradesData.map((trade) => Trade.fromMap(trade)).toList();
+      state = AsyncData(trades);
     } catch (e, stackTrace) {
       debugPrint(e.toString());
       state = AsyncError(e.toString(), stackTrace);
@@ -19,11 +22,11 @@ class AccountInfoController extends StateNotifier<AsyncValue> {
   }
 }
 
-final accountInfoControllerProvider =
-    StateNotifierProvider.autoDispose<AccountInfoController, AsyncValue>(
+final tradeControllerProvider =
+    StateNotifierProvider.autoDispose<TradeController, AsyncValue<List<Trade>>>(
   (ref) {
-    final controler = AccountInfoController(ref);
-    controler.getAccountInfo();
+    final controler = TradeController(ref);
+    controler.getTrades();
     return controler;
   },
 );

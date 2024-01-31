@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         GlobalFunction.changeStatusBarTheme(isDark: false);
 
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Trade',
           navigatorKey: GlobalFunction.navigatorKey,
           theme: getAppTheme(context: context, isDarkTheme: false),

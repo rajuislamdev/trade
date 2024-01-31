@@ -5,7 +5,8 @@ import 'package:trade/services/hive_service_provider.dart';
 import 'package:trade/utils/api_client.dart';
 
 abstract class ProfileProvider {
-  Future<Response> getTrades();
+  Future<Response> getAccountInfo();
+  Future<Response> getLastFourNumber();
 }
 
 class ProfileService implements ProfileProvider {
@@ -14,12 +15,29 @@ class ProfileService implements ProfileProvider {
   ProfileService(this.ref);
 
   @override
-  Future<Response> getTrades() async {
+  Future<Response> getAccountInfo() async {
     String? token = await ref.refresh(hiveStoreService).getAuthToken();
+    final String? number = await ref.read(hiveStoreService).getUserNumber();
+
     final response = await ref.read(apiClientProvider).post(
       AppConstants.getAccountInfo,
       data: {
-        "login": '2088888',
+        "login": number,
+        "token": token,
+      },
+    );
+    return response;
+  }
+
+  @override
+  Future<Response> getLastFourNumber() async {
+    String? token = await ref.refresh(hiveStoreService).getAuthToken();
+    final String? number = await ref.read(hiveStoreService).getUserNumber();
+
+    final response = await ref.read(apiClientProvider).post(
+      AppConstants.getLastFourNumbersPhone,
+      data: {
+        "login": number,
         "token": token,
       },
     );

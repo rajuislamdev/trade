@@ -7,6 +7,8 @@ class AppConstants {
       '$baseUrl/api/ClientCabinetBasic/GetOpenTrades';
   static const String getAccountInfo =
       '$baseUrl/api/ClientCabinetBasic/GetAccountInformation';
+  static const String getLastFourNumbersPhone =
+      '$baseUrl/api/ClientCabinetBasic/GetLastFourNumbersPhone';
   // hive constants
 
   // Box Names
@@ -19,6 +21,7 @@ class AppConstants {
 
   // Auth Variable Names
   static const String authToken = 'token';
+  static const String phoneNumber = 'phoneNumber';
 
   // User Variable Names
   static const String userData = 'userData';

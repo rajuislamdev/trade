@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:trade/config/app_constants.dart';
@@ -13,6 +14,12 @@ class HiveService {
     authBox.put(AppConstants.authToken, authToken);
   }
 
+  // save login
+  Future saveNumber({required String phoneNumber}) async {
+    final authBox = await Hive.openBox(AppConstants.authBox);
+    authBox.put(AppConstants.phoneNumber, phoneNumber);
+  }
+
   // get user auth token
   Future<String?> getAuthToken() async {
     final authToken = await Hive.openBox(AppConstants.authBox)
@@ -24,43 +31,26 @@ class HiveService {
     return null;
   }
 
+  // get user number
+  Future<String?> getUserNumber() async {
+    final phoneNumber = await Hive.openBox(AppConstants.authBox)
+        .then((box) => box.get(AppConstants.phoneNumber));
+
+    if (phoneNumber != null) {
+      return phoneNumber;
+    }
+    return null;
+  }
+
   // remove access token
-  Future removeUserAuthToken() async {
-    final authBox = await Hive.openBox(AppConstants.authBox);
-    authBox.delete(AppConstants.authToken);
-  }
-
-  // // save user information
-  // Future saveUserInfo({required User userInfo}) async {
-  //   final userBox = await Hive.openBox(AppConstants.userBox);
-  //   userBox.put(AppConstants.userData, userInfo.toMap());
-  // }
-
-  // // get user information
-  // Future<User?> getUserInfo() async {
-  //   final userBox = await Hive.openBox(AppConstants.userBox);
-  //   Map<dynamic, dynamic>? userInfo = userBox.get(AppConstants.userData);
-  //   if (userInfo != null) {
-  //     Map<String, dynamic> userInfoStringKeys =
-  //         userInfo.cast<String, dynamic>();
-  //     User user = User.fromMap(userInfoStringKeys);
-  //     return user;
-  //   }
-  //   return null;
-  // }
-
-  // remove user data
-  Future removeUserData() async {
-    final userBox = await Hive.openBox(AppConstants.userBox);
-    userBox.clear();
-  }
-
-  Future<bool> removeAllData() async {
+  Future<bool> logout() async {
     try {
-      await removeUserAuthToken();
-      await removeUserData();
+      final authBox = await Hive.openBox(AppConstants.authBox);
+      authBox.delete(AppConstants.authToken);
+      authBox.delete(AppConstants.phoneNumber);
       return true;
-    } catch (e) {
+    } catch (error) {
+      debugPrint(error.toString());
       return false;
     }
   }

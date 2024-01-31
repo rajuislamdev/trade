@@ -8,6 +8,7 @@ import 'package:trade/config/theme.dart';
 class CustomButton extends StatelessWidget {
   final String buttonText;
   final Color? buttonColor;
+  final Color buttonTextColor;
   final void Function()? onPressed;
 
   const CustomButton({
@@ -15,6 +16,7 @@ class CustomButton extends StatelessWidget {
     required this.buttonText,
     required this.onPressed,
     this.buttonColor,
+    this.buttonTextColor = AppColor.whiteColor,
   }) : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class CustomButton extends StatelessWidget {
       child: Text(
         buttonText,
         style: AppTextStyle(context).bodyText.copyWith(
-              color: AppColor.whiteColor,
+              color: buttonTextColor,
               fontWeight: FontWeight.w500,
             ),
         textAlign: TextAlign.center,
